@@ -6,6 +6,15 @@
 \usepackage{amsmath}
 \usepackage{graphics}
 
+\usepackage{cite}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{hyperref}
+\usepackage{svg}
+
 \usepackage{etoolbox}
 \AtBeginEnvironment{quote}{\par\singlespacing\small}
 
@@ -64,13 +73,13 @@ The steps to solve any machine learning problem are the following:
 \end{enumerate}
 
 In supervised learning, us humans will create the training data, this means
-creating example inputs, each corresponding with the desired ouput.
+creating example inputs, each corresponding with the desired output.
 
 The training the model part is iterating through different weight values and
 checking with the training data to see if we are close to the desire output.
 
 We optimize the way we look for those weights, we will see that in detail in
-the future. 
+the future.
 
 At first, our model will be dumb, it will not be able to perform well, like a
 baby. But once we have run some iterations and we correct it, it will start
@@ -100,9 +109,9 @@ v_{norm} = \dfrac{(v - v_{min})}{(v_{max} - v_{min})}
 where {$v_{min}$} is the min value possible and {$v_{max}$} is the max value
 possible.
 
-This will generate values between $1$ and $0$, thus we can define the input as 
+This will generate values between $1$ and $0$, thus we can define the input as
 
-{$ v \in [v_{min}, v_{max}] \rightarrow v_{norm} \in [0, 1] $} 
+{$ v \in [v_{min}, v_{max}] \rightarrow v_{norm} \in [0, 1] $}
 
 A single input becomes
 
@@ -110,20 +119,20 @@ A single input becomes
     \vec{x} = \begin{bmatrix}
                 x_0 \\
                 x_1 \\
-              \end{bmatrix}, 
+              \end{bmatrix},
               \in [0, 1]^2
 \end{equation}
 
 \subsection{output decisions}
 
 We will have our model estimate a threat score ($y$) and based on a threshold
-($\delta$) we will assing a class to it. If $y > \delta$ high threat, run away.
-If $y$  is around 0, do nothing. If $y < \delta$ negative threat,
+($\delta$) we will assign a class to it. If $y > \delta$ high threat, run away.
+If $y$ is around 0, do nothing. If $y < \delta$ negative threat,
 approach.
 
 \subsection{model estimation}
 
-We need to estimate the function which transforms the input vetor to the
+We need to estimate the function which transforms the input vector to the
 output. This consists on two parts
 
 \begin{itemize}
@@ -133,24 +142,30 @@ output. This consists on two parts
 
 \subsubsection{model architecture selection}
 
-Our model has three parameters $w_0, w_1, b$ they can be represented as 
+Our model has three parameters $w_0, w_1, b$ they can be represented as
 
 \begin{equation}
     \vec{w} = \begin{bmatrix}
                 w_0 \\
                 w_1 \\
-              \end{bmatrix}, 
+              \end{bmatrix},
 \end{equation}
 
 and $b$ as a scalar. All three being real numbers. We will define a super
-simple function such as 
+simple function such as
 
 \noindent
 \begin{equation}
     y(x_0, x_1) = w_0  x_0 + w_1  x_1 + b = \vec{w}^T\vec{x} + b
 \end{equation}
+\noindent
 
 Where $b$ is the bias.
+
+\begin{equation}
+    y(\vec{x}) = \vec{w}^T\vec{x} + b
+\end{equation}
+
 
 \subsubsection{model training}
 
@@ -158,7 +173,7 @@ We defined $y(\vec{x})$, now we have to find the best weights for the function.
 We will choose the parameters so that the outputs on the training data inputs,
 match the corresponding outputs as close as possible.
 
-How do we calculate the error? 
+How do we calculate the error?
 
 On the $i^{th}$ training data pair $(\vec{x}(i), y_{gt}(i))$ ($gt$ ground
 truth) we can say $y_{predicted}(i) = \vec{w}^{T}\vec{x}(i) + b$, then we
@@ -171,7 +186,7 @@ $y_{predicted}(i)$ with $y_{gt}$
 
 It is squared to take into account negative values.
 
-This way we calculate the error of one iteration, the overal error (aka loss)
+This way we calculate the error of one iteration, the overall error (aka loss)
 is the sum of all $e(i)^2$
 
 \begin{equation}
@@ -180,8 +195,72 @@ is the sum of all $e(i)^2$
 
 our goal is to find the $\vec{w}$ that minimizes $E^2$.
 
-But in practice, one often stops when the results are accurate enough to solve
-the problem we are presented.
+The ideal goal would be to actually get $E^2$ to 0, but in practice, one often
+stops when the results are accurate enough to solve the problem we are
+presented.
+
+\subsubsection{geometrical view of machine learning}
+
+In the model specified above, each input is a vector with 2 values $x_0$ and
+$x_1$ (hardness and sharpness). If we map this into a 2D space, each input is a
+point on the plane. Usually it would have more dimensions, but this being a
+super simple problem only have two. This space is called \emph{feature space}.
+
+The model will work as a translator, that takes points in the feature space and
+map them to another space with less dimensions called, the \emph{output space}
+(they really break their heads thinking for a name for this last one).
+
+It is supposed to be easier for the computer to take decisions in the
+\emph{output space}
+
+\subsubsection{regression vs classification in ml}
+
+We have two types of machine learning models: \emph{regressors} and
+\emph{classifiers}.
+
+A regressor attempts to provide us with a value based on a specific input,
+while classifiers aim to assign a class to which the input belongs.
+
+It is possible to create a regressor and then, based on a threshold, select a
+class. Alternatively, a model can directly output one of these predefined
+classes.
+
+\subsection{linear vs nonlinear models}
+
+\begin{figure}[htbp]
+  \centering
+  \includesvg[width=1\columnwidth]{images/classify-nolinear.svg}
+  \caption{Feature map where we cannot use a linear function to classify the
+    inputs}
+  \label{fig:nolinear}
+\end{figure}
+
+Usually when we try and classify points, they are not in a clear straight
+line. Meaning that Function~\ref{eq:yxw} not going to cut it. This is also
+shown in Figure~\ref{fig:nolinear}.
+
+\begin{equation}
+    y(\vec{x}) = \vec{w}^T\vec{x} + b
+    \label{eq:yxw}
+\end{equation}
+
+We will need a non-linear function to classify these points. A popular
+function in machine learning is the Sigmoid function, (named because of its S
+shape). Shown in Equation~\ref{eq:sigmoid}
+
+\begin{equation}
+    \sigma(x) = \frac{1}{1 + e^{-x}}
+    \label{eq:sigmoid}
+\end{equation}
+
+Thus we can use the model architecture shown in
+Equation~\ref{eq:sigmoid-model-arch}. It is the building blocks of a neural
+network.
+
+\begin{equation}
+    y = \sigma(\vec{w}^T\vec{x} + b)
+    \label{eq:sigmoid-model-arch}
+\end{equation}
 
 
 \end{document}
