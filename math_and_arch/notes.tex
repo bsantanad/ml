@@ -25,7 +25,7 @@
 \begin{document}
    \maketitle
 
-\section{introduction}
+\section{Introduction}
 
 Before jumping into deep learning, let us talk about machine learning a bit.
 What is machine learning? Living creatures are taking decisions at every moment.
@@ -85,7 +85,7 @@ At first, our model will be dumb, it will not be able to perform well, like a
 baby. But once we have run some iterations and we correct it, it will start
 performing better.
 
-\section{simple model}
+\section{Simple Model}
 
 The book used a simple example on how to apply machine learning to the dog
 problem we stated above, in the book it was a cat but I am more of a dog person
@@ -95,7 +95,7 @@ We have a hypothetical dog which only needs to take one decision in life, run
 away from an object, ignore it, or approach it. It takes this decision based
 only on two quantitative inputs.
 
-\subsection{input features}
+\subsection{Input Features}
 
 {$ \displaystyle x_0 = hardness,$}
 {$ x_1 = sharpness $}
@@ -123,14 +123,14 @@ A single input becomes
               \in [0, 1]^2
 \end{equation}
 
-\subsection{output decisions}
+\subsection{Output Decisions}
 
 We will have our model estimate a threat score ($y$) and based on a threshold
 ($\delta$) we will assign a class to it. If $y > \delta$ high threat, run away.
 If $y$ is around 0, do nothing. If $y < \delta$ negative threat,
 approach.
 
-\subsection{model estimation}
+\subsection{Model Estimation}
 
 We need to estimate the function which transforms the input vector to the
 output. This consists on two parts
@@ -140,7 +140,7 @@ output. This consists on two parts
   \item model training
 \end{itemize}
 
-\subsubsection{model architecture selection}
+\subsubsection{Model Architecture Selection}
 
 Our model has three parameters $w_0, w_1, b$ they can be represented as
 
@@ -199,7 +199,7 @@ The ideal goal would be to actually get $E^2$ to 0, but in practice, one often
 stops when the results are accurate enough to solve the problem we are
 presented.
 
-\subsubsection{geometrical view of machine learning}
+\subsection{Geometrical View of Machine Learning}
 
 In the model specified above, each input is a vector with 2 values $x_0$ and
 $x_1$ (hardness and sharpness). If we map this into a 2D space, each input is a
@@ -213,7 +213,7 @@ map them to another space with less dimensions called, the \emph{output space}
 It is supposed to be easier for the computer to take decisions in the
 \emph{output space}
 
-\subsubsection{regression vs classification in ml}
+\subsection{Regression vs Classification in ML}
 
 We have two types of machine learning models: \emph{regressors} and
 \emph{classifiers}.
@@ -225,7 +225,7 @@ It is possible to create a regressor and then, based on a threshold, select a
 class. Alternatively, a model can directly output one of these predefined
 classes.
 
-\subsection{linear vs nonlinear models}
+\subsection{Linear vs Nonlinear Models}
 
 \begin{figure}[htbp]
   \centering
